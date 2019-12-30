@@ -1,7 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <assert.h> 
 #include "stack.h"
-#include <cassert>
+#include <stdlib.h>
+#include <stdio.h>
 
 void expandStack(Stack* stack);
 
@@ -154,7 +155,7 @@ Element top(Stack* stack)
 	return stack->content[stack->topIndex];
 }
 
-capacityOfStack(Stack* stack)
+int capacityOfStack(Stack* stack)
 {
 	return stack->size;
 }

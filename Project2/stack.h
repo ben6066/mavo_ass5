@@ -2,7 +2,7 @@
 #define __STACK_H
 
 #include "element.h"
-#include <stdlib.h>
+
 
 typedef struct {
     Element* content;

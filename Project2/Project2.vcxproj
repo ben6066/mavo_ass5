@@ -28,6 +28,7 @@
     <ClCompile Include="..\..\..\Users\1234\Desktop\ass5\element.c" />
     <ClCompile Include="queue.c" />
     <ClCompile Include="stack.c" />
+    <ClCompile Include="strings.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

@@ -59,13 +59,24 @@ void enqueue(Queue* queue, Element element)
 	push(queue->s1, element);
 }
 
+//Fix
 void oppositeStack(Stack* s1, Stack* s2)
 {
-	for (int i = s1->topIndex; i >= 0; i--)
+	/*for (int i = s1->topIndex; i >= 0; i--)
 	{
 		push(s2, s1->content[i]);
 
 		pop(s1);
+	}*/
+
+	if (isStackEmpty(s1) == 1)
+	{
+		return;
+	}
+
+	for (int i = lenOfStack(s1) - 1; i >= 0; i--)
+	{
+		push(s2, pop(s1));
 	}
 }
 
@@ -82,11 +93,20 @@ Element dequeue(Queue* queue)
 	return topInQueue;
 }
 
+//Fix
 Element peek(Queue* queue)
 {
 	assert(isStackEmpty(queue->s1) == 0);
 
-	return queue->s1->content[0];
+	oppositeStack(queue->s1, queue->s2);
+
+	Element peek = top(queue->s2);
+
+	oppositeStack(queue->s2, queue->s1);
+
+	return peek;
+	
+	//return queue->s1->content[0];
 }
 
 void main()
@@ -103,9 +123,16 @@ void main()
 	enqueue(queue, e1);
 	enqueue(queue, e2);
 	enqueue(queue, e3);
-	enqueue(queue, e3);
+
+	printf("Peek: %c\n", peek(queue).c);
+
+	printStack(queue->s1);
+	
+	dequeue(queue);
+	printf("\n");
+	printStack(queue->s1);
+
+	printf("Peek: %c\n", peek(queue).c);
 
 	printf("Capacity Of Queue: %d", capacityOfQueue(queue));
-
-	destroyQueue(queue);
 }

@@ -1,33 +1,40 @@
 #define _CRT_SECURE_NO_WARNINGS
+#include <assert.h> 
 #include "stack.h"
+#include <cassert>
 
 void expandStack(Stack* stack);
 
 Stack* initStack()
 {
-	Stack stack;
+	Stack* stack = (Stack*)malloc(sizeof(Stack));
 
-	stack.size = 1;
-
-	stack.topIndex = -1;
-
-	stack.content = (Element*)malloc(sizeof(Element));
-
-	//Case malloc failed
-	if (stack.content == NULL)
+	if (stack == NULL)
 	{
 		printf("Error! Malloc has failed in file 'stack.c', 'initStack' function\n");
+		return NULL;
 	}
 
-	Stack* pS = &stack;
+	stack->size = 1;
 
-	return pS;
+	stack->topIndex = -1;
+
+	stack->content = (Element*)malloc(sizeof(Element));
+
+	//Case malloc failed
+	if (stack->content == NULL)
+	{
+		printf("Error! Malloc has failed in file 'stack.c', 'initStack' function\n");
+		return NULL;
+	}
+
+	return stack;
 }
 
 // check with Dan if expandedStack pointer needs to be freed
 void expandStack(Stack* stack)
 {
-	if (stack->content == NULL)
+	if (stack == NULL ||stack->content == NULL)
 	{
 		return;
 	}
@@ -73,9 +80,14 @@ void push(Stack* stack, Element element)
 
 void destroyStack(Stack* stack)
 {
-	if (stack->content != NULL)
+	if (stack != NULL)
 	{
-		free(stack->content);
+		if (stack->content != NULL)
+		{
+			free(stack->content);
+		}
+
+		free(stack);
 	}
 }
 
@@ -85,18 +97,48 @@ void printStack(Stack* stack)
 	{
 		for (int i = stack->topIndex; i >= 0; i--)
 		{
-			printf("%d: %c", stack->topIndex + 1, stack->content[i].c);
+			printf("%d: %c\n", i + 1, stack->content[i].c);
 		}
 	}
 }
 
+int isStackEmpty(Stack* stack)
+{
+	if (stack->topIndex == -1)
+	{
+		return 1;
+	}
+
+	return 0;
+}
+
+int lenOfStack(Stack* stack)
+{
+	int lenOfStack = 0;
+
+	for (int i = 0; i <= stack->topIndex; i++)
+	{
+		lenOfStack++;
+	}
+
+	return lenOfStack;
+}
+
+Element top(Stack* stack) 
+{
+	assert (isStackEmpty(stack) == 0);
+	
+	return stack->content[stack->topIndex];
+}
+
+capacityOfStack(Stack* stack)
+{
+	return stack->size;
+}
+
 void main()
 {
-	Stack* pS = initStack();
-
-	printf("%d\n", pS->topIndex);
-
-	printf("%d\n", pS->size);
+	Stack* stack = initStack();
 
 	Element e1;
 	e1.c = 'a';
@@ -107,11 +149,46 @@ void main()
 	Element e3;
 	e3.c = 'c';
 
-	push(pS, e1);
+	Element e4;
+	e4.c = 'd';
 
-	push(pS, e2);
+	Element e5;
+	e5.c = 'e';
 
-	push(pS, e3);
+	Element e6;
+	e6.c = 'f';
 
-	printStack(pS);
+	push(stack, e1);
+
+	push(stack, e2);
+
+	push(stack, e3);
+
+	push(stack, e4);
+
+	push(stack, e5);
+
+	push(stack, e6);
+
+	printf("Length: %d\n", lenOfStack(stack));
+
+	if (isStackEmpty(stack) == 0)
+	{
+		printf("Stack isn't empty\n");
+	}
+
+	else
+	{
+		printf("Stack is empty\n");
+	}
+
+	printf("Capacity: %d\n", capacityOfStack(stack));
+
+	printStack(stack);
+
+	printf("Top of stack: %c\n", top(stack).c);
+
+	destroyStack(stack);
+
+	printf("%d\n", stack->size);
 }

@@ -13,13 +13,13 @@ typedef struct {
 Stack* initStack();
 void destroyStack(Stack* stack);
 
-//int isStackEmpty(Stack* stack);
-//int lenOfStack(Stack* stack);
-//int capacityOfStack(Stack* stack);
+int isStackEmpty(Stack* stack);
+int lenOfStack(Stack* stack);
+int capacityOfStack(Stack* stack);
 
 void push(Stack* stack, Element element);
-//Element pop(Stack* stack);
-//Element top(Stack* stack);
+Element pop(Stack* stack);
+Element top(Stack* stack);
 
 void printStack(Stack* stack);
 

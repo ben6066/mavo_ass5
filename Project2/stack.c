@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 void expandStack(Stack* stack);
+void reduceStack(Stack* stack);
 
 Stack* initStack()
 {
@@ -176,41 +177,3 @@ Element pop(Stack* stack)
 	return topElement;
 }
 
-void main()
-{
-	Stack* stack = initStack();
-
-	Element e1;
-	e1.c = 'a';
-
-	Element e2;
-	e2.c = 'b';
-
-	Element e3;
-	e3.c = 'c';
-
-	Element e4;
-	e4.c = 'd';
-
-	Element e5;
-	e5.c = 'e';
-
-	Element e6;
-	e6.c = 'f';
-
-	Element e7;
-	e7.c = 'g';
-
-	push(stack, e1);
-	push(stack, e2);
-	push(stack, e3);
-	push(stack, e4);
-
-	printStack(stack);
-
-	printf("Top: %c\n", top(stack));
-
-	printf("Capacity: %d\n", capacityOfStack(stack));
-
-	destroyStack(stack);
-}

@@ -31,7 +31,6 @@ Stack* initStack()
 	return stack;
 }
 
-// check with Dan if expandedStack pointer needs to be freed
 void expandStack(Stack* stack)
 {
 	if (stack == NULL ||stack->content == NULL)
@@ -61,6 +60,37 @@ void expandStack(Stack* stack)
 
 	//Point to the new array in the heap
 	stack->content = expandedStack;
+}
+
+void reduceStack(Stack* stack)
+{
+	if (stack == NULL || stack->content == NULL)
+	{
+		return;
+	}
+
+	stack->size /= 2;
+
+	Element* reducedStack = (Element*)malloc((stack->size) * sizeof(Element));
+
+	//Case malloc failed
+	if (reducedStack == NULL)
+	{
+		printf("Error! Malloc has failed in file 'stack.c', 'reduceStack' function\n");
+		return;
+	}
+
+	//Copy values
+	for (int i = 0; i <= stack->topIndex; i++)
+	{
+		reducedStack[i].c = stack->content[i].c;
+	}
+
+	//Free old array
+	free(stack->content);
+
+	//Point to the new array in the heap
+	stack->content = reducedStack;
 }
 
 void push(Stack* stack, Element element)
@@ -114,14 +144,7 @@ int isStackEmpty(Stack* stack)
 
 int lenOfStack(Stack* stack)
 {
-	int lenOfStack = 0;
-
-	for (int i = 0; i <= stack->topIndex; i++)
-	{
-		lenOfStack++;
-	}
-
-	return lenOfStack;
+	return stack->topIndex + 1;
 }
 
 Element top(Stack* stack) 
@@ -134,6 +157,22 @@ Element top(Stack* stack)
 capacityOfStack(Stack* stack)
 {
 	return stack->size;
+}
+
+Element pop(Stack* stack)
+{
+	assert(isStackEmpty(stack) == 0);
+
+	Element topElement = top(stack);
+
+	stack->topIndex--;
+
+	if (stack->topIndex == (stack->size / 2) - 2)
+	{
+		reduceStack(stack);
+	}
+
+	return topElement;
 }
 
 void main()
@@ -158,37 +197,19 @@ void main()
 	Element e6;
 	e6.c = 'f';
 
+	Element e7;
+	e7.c = 'g';
+
 	push(stack, e1);
-
 	push(stack, e2);
-
 	push(stack, e3);
-
 	push(stack, e4);
-
-	push(stack, e5);
-
-	push(stack, e6);
-
-	printf("Length: %d\n", lenOfStack(stack));
-
-	if (isStackEmpty(stack) == 0)
-	{
-		printf("Stack isn't empty\n");
-	}
-
-	else
-	{
-		printf("Stack is empty\n");
-	}
-
-	printf("Capacity: %d\n", capacityOfStack(stack));
 
 	printStack(stack);
 
-	printf("Top of stack: %c\n", top(stack).c);
+	printf("Top: %c\n", top(stack));
+
+	printf("Capacity: %d\n", capacityOfStack(stack));
 
 	destroyStack(stack);
-
-	printf("%d\n", stack->size);
 }

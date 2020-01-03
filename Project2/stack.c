@@ -40,9 +40,7 @@ void expandStack(Stack* stack)
 		return;
 	}
 
-	stack->size *= 2;
-
-	Element* expandedStack = (Element*)malloc((stack->size) * sizeof(Element));
+	Element* expandedStack = (Element*)malloc(2 * (stack->size) * sizeof(Element));
 
 	//Case malloc failed
 	if (expandedStack == NULL)
@@ -50,6 +48,8 @@ void expandStack(Stack* stack)
 		printf("Error! Malloc has failed in file 'stack.c', 'expandStack' function\n");
 		return;
 	}
+
+	stack->size *= 2;
 
 	//Copy values
 	for (int i = 0; i <= stack->topIndex; i++)
@@ -71,9 +71,7 @@ void reduceStack(Stack* stack)
 		return;
 	}
 
-	stack->size /= 2;
-
-	Element* reducedStack = (Element*)malloc((stack->size) * sizeof(Element));
+	Element* reducedStack = (Element*)malloc(((stack->size) / 2) * sizeof(Element));
 
 	//Case malloc failed
 	if (reducedStack == NULL)
@@ -81,6 +79,8 @@ void reduceStack(Stack* stack)
 		printf("Error! Malloc has failed in file 'stack.c', 'reduceStack' function\n");
 		return;
 	}
+
+	stack->size /= 2;
 
 	//Copy values
 	for (int i = 0; i <= stack->topIndex; i++)

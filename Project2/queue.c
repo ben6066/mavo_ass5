@@ -36,7 +36,7 @@ void destroyQueue(Queue* queue)
 
 int isQueueEmpty(Queue* queue)
 {
-	if (isStackEmpty(queue->s1) == 1)
+	if ((isStackEmpty(queue->s1) == 1) && (isStackEmpty(queue->s2) == 1))
 	{
 		return 1;
 	}
@@ -46,7 +46,7 @@ int isQueueEmpty(Queue* queue)
 
 int lenOfQueue(Queue* queue)
 {
-	return lenOfStack(queue->s1);
+	return lenOfStack(queue->s1) + lenOfStack(queue->s2);
 }
 
 int capacityOfQueue(Queue* queue)
@@ -59,16 +59,8 @@ void enqueue(Queue* queue, Element element)
 	push(queue->s1, element);
 }
 
-//Fix
 void oppositeStack(Stack* s1, Stack* s2)
 {
-	/*for (int i = s1->topIndex; i >= 0; i--)
-	{
-		push(s2, s1->content[i]);
-
-		pop(s1);
-	}*/
-
 	if (isStackEmpty(s1) == 1)
 	{
 		return;
@@ -82,57 +74,94 @@ void oppositeStack(Stack* s1, Stack* s2)
 
 Element dequeue(Queue* queue)
 {
-	assert(isStackEmpty(queue->s1) == 0);
+	assert(isQueueEmpty(queue) == 0);
 
-	oppositeStack(queue->s1, queue->s2);
+	if (isStackEmpty(queue->s2) == 1)
+	{
+		oppositeStack(queue->s1, queue->s2);
+	}
 
 	Element topInQueue = pop(queue->s2);
-
-	oppositeStack(queue->s2, queue->s1);
 
 	return topInQueue;
 }
 
-//Fix
 Element peek(Queue* queue)
 {
-	assert(isStackEmpty(queue->s1) == 0);
+	assert(isQueueEmpty(queue) == 0);
 
-	oppositeStack(queue->s1, queue->s2);
+	Element peek;
 
-	Element peek = top(queue->s2);
+	if (isStackEmpty(queue->s2) == 1)
+	{
+		oppositeStack(queue->s1, queue->s2);
+	}
 
-	oppositeStack(queue->s2, queue->s1);
+	return top(queue->s2);
+}
 
-	return peek;
+void printQueue(Queue* queue)
+{
+	if (isStackEmpty(queue->s1) == 1 && isStackEmpty(queue->s2) == 1)
+	{
+		return;
+	}
+
+	printf("Queue: ");
+
+	if (isStackEmpty(queue->s1) != 1)
+	{
+		for (int i = lenOfStack(queue->s1) - 1; i >= 0; i--)
+		{
+			printf("%c ", queue->s1->content[i].c);
+		}
+	}
+
+	if (isStackEmpty(queue->s2) != 1)
+	{
+		for (int i = 0; i <= queue->s2->topIndex; i++)
+		{
+			printf("%c ", queue->s2->content[i].c);
+		}
+	}
 	
-	//return queue->s1->content[0];
+	printf("\n\n");
 }
 
 void main()
 {
 	Queue* queue = initQueue();
 
+	printf("Capacity Of Empty Queue: %d\n\n", capacityOfQueue(queue));
+
 	Element e1;
-	e1.c = 'a';
+	e1.c = '1';
 	Element e2;
-	e2.c = 'b';
+	e2.c = '2';
 	Element e3;
-	e3.c = 'c';
+	e3.c = '3';
 
 	enqueue(queue, e1);
 	enqueue(queue, e2);
 	enqueue(queue, e3);
 
+	printQueue(queue);
+
 	printf("Peek: %c\n", peek(queue).c);
 
-	printStack(queue->s1);
-	
 	dequeue(queue);
-	printf("\n");
-	printStack(queue->s1);
+	printf("Removed First Element\n");
 
-	printf("Peek: %c\n", peek(queue).c);
+	printQueue(queue);
 
-	printf("Capacity Of Queue: %d", capacityOfQueue(queue));
+	printf("Peek: %c\n\n", peek(queue).c);
+
+	Element e4;
+	e4.c = '4';
+
+	enqueue(queue, e4);
+
+	printQueue(queue);
+
+	printf("Capacity Of Queue: %d\n", capacityOfQueue(queue));
 }

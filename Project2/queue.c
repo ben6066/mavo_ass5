@@ -18,7 +18,25 @@ Queue* initQueue()
 	}
 
 	queue->s1 = initStack();
+
+	if (queue->s1 == NULL)
+	{
+		free(queue);
+
+		printf("Error! Malloc has failed in file 'queue.c', 'initQueue' function\n");
+		return NULL;
+	}
+
 	queue->s2 = initStack();
+
+	if (queue->s2 == NULL)
+	{
+		destroyStack(queue->s1);
+		free(queue);
+
+		printf("Error! Malloc has failed in file 'queue.c', 'initQueue' function\n");
+		return NULL;
+	}
 
 	return queue;
 }
@@ -113,7 +131,7 @@ void printQueue(Queue* queue)
 	{
 		for (int i = lenOfStack(queue->s1) - 1; i >= 0; i--)
 		{
-			printf("%c ", queue->s1->content[i].c);
+			printf("(%c) ", queue->s1->content[i].c);
 		}
 	}
 
@@ -128,6 +146,7 @@ void printQueue(Queue* queue)
 	printf("\n\n");
 }
 
+/*
 void main()
 {
 	Queue* queue = initQueue();
@@ -164,4 +183,19 @@ void main()
 	printQueue(queue);
 
 	printf("Capacity Of Queue: %d\n", capacityOfQueue(queue));
+
+	Element e5;
+	e5.c = '5';
+
+	enqueue(queue, e5);
+
+	printQueue(queue);
+
+	dequeue(queue);
+	printf("Removed Second Element\n");
+
+	printf("Peek: %c\n\n", peek(queue).c);
+
+	printQueue(queue);
 }
+*/

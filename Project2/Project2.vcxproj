@@ -26,6 +26,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Users\1234\Desktop\ass5\element.c" />
+    <ClCompile Include="..\..\..\Users\1234\Desktop\checkfiles\checkFilesV2\main.c" />
     <ClCompile Include="queue.c" />
     <ClCompile Include="stack.c" />
     <ClCompile Include="strings.c" />

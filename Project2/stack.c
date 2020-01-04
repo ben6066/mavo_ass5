@@ -26,6 +26,7 @@ Stack* initStack()
 	//Case malloc failed
 	if (stack->content == NULL)
 	{
+		free(stack);
 		printf("Error! Malloc has failed in file 'stack.c', 'initStack' function\n");
 		return NULL;
 	}
@@ -129,7 +130,9 @@ void printStack(Stack* stack)
 	{
 		for (int i = stack->topIndex; i >= 0; i--)
 		{
-			printf("%d: %c\n", i + 1, stack->content[i].c);
+			printf("%d: ", i + 1);
+			printElement(stack->content[i]);
+			printf("\n");
 		}
 	}
 }
@@ -176,4 +179,5 @@ Element pop(Stack* stack)
 
 	return topElement;
 }
+
 
